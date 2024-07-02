@@ -42,7 +42,7 @@
         </developer>
     </developers>
 
-    <properties>
+    <!-- <properties>
         <java.version>11</java.version>
         <slf4j.version>2.0.13</slf4j.version>
         <junit.version>4.13.2</junit.version>
@@ -51,14 +51,14 @@
         <axis2.version>1.7.9</axis2.version>
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <simple-xml.version>2.7.1</simple-xml.version>
-    </properties>
+    </properties> -->
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.santuario/xmlsec -->
         <dependency>
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
-            <version>4.0.2</version>
+            <version>3.0.2</version>
         </dependency>
 
         <!-- Simple Xml Framework -->
