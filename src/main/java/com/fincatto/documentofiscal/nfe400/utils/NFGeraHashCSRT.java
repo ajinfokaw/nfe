@@ -30,22 +30,22 @@ public class NFGeraHashCSRT {
     }
 
     public String getHashCSRT() throws NoSuchAlgorithmException {
-      return  base64EncodeToString(this.config.getCSRT()
-              + this.chaveAcesso);
-    }
+        // Concatena o CSRT com a chave de acesso
+        String csrt = this.config.getCSRT();
+        String concatenated = csrt + this.chaveAcesso;
 
-    public static String base64EncodeToString(String toEncode) throws NoSuchAlgorithmException {
-        return Base64.getEncoder().encodeToString(getSha1(toEncode));
+        // Gera o hash SHA-1 da concatenação
+        byte[] sha1Hash = getSha1(concatenated);
+
+        // Codifica o hash em Base64
+        return Base64.getEncoder().encodeToString(sha1Hash);
     }
 
     public static byte[] getSha1(String toEncode) throws NoSuchAlgorithmException {
-        return MessageDigest.
-                getInstance("SHA1").digest(toEncode.getBytes());
+        return MessageDigest.getInstance("SHA-1").digest(toEncode.getBytes());
     }
 
     public static String getStringSha1(String toEncode) throws NoSuchAlgorithmException {
         return String.format("%040x", new BigInteger(1, NFGeraHashCSRT.getSha1(toEncode)));
     }
-
-
 }
