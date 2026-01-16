@@ -1,0 +1,36 @@
+ANÁLISE DA CHAVE DE ACESSO DO XML
+=================================
+
+Id do XML: NFe41260109191555000132550010000003761000020630
+
+Removendo prefixo "NFe": 41260109191555000132550010000003761000020630
+
+DECOMPOSIÇÃO DA CHAVE:
+---------------------
+UF:               41              (2 dígitos) ✓
+AAMM:             2601            (4 dígitos) ✓ (jan/2026)
+CNPJ:             09191555000132  (14 dígitos) ✓
+Modelo:           55              (2 dígitos) ✓ (NFe)
+Série:            001             (3 dígitos) ✓
+Número:           0000003761      (10 dígitos) ❌ ERRO! Deveria ter 9 dígitos
+Tipo Emissão:     0               (1 dígito) ✓
+Código Random:    00002063        (8 dígitos) ✓
+DV:               0               (1 dígito) ✓
+
+TOTAL: 2+4+14+2+3+10+1+8+1 = 45 DÍGITOS ❌
+
+DEVERIA SER: 2+4+14+2+3+9+1+8+1 = 44 DÍGITOS ✓
+
+DADOS DO XML:
+-------------
+<nNF>376</nNF>
+
+PROBLEMA IDENTIFICADO:
+---------------------
+O número da nota "376" está sendo formatado com 10 dígitos (0000003761) 
+ao invés de 9 dígitos (000000376).
+
+O número "376" deveria gerar: 000000376 (9 dígitos)
+Mas está gerando:             0000003761 (10 dígitos)
+
+Há um dígito extra "1" ao final do número da nota!
