@@ -32,7 +32,8 @@
     </developers>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
+        <xmlsec.version>3.0.3</xmlsec.version>
         <jackson.version>2.18.3</jackson.version>
         <slf4j.version>2.0.13</slf4j.version>
         <junit.version>4.13.2</junit.version>
@@ -48,7 +49,7 @@
         <dependency>
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
-            <version>4.0.2</version>
+            <version>${xmlsec.version}</version>
         </dependency>
 
         <!-- Simple Xml Framework -->

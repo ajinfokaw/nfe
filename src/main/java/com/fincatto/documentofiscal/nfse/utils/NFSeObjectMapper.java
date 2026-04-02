@@ -18,7 +18,7 @@ public class NFSeObjectMapper extends ObjectMapper {
         this.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         this.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         this.registerModule(new JavaTimeModule());
-        this.registerModule(new SimpleModule().addDeserializer(BigDecimal.class, new StdScalarDeserializer<>(BigDecimal.class) {
+        this.registerModule(new SimpleModule().addDeserializer(BigDecimal.class, new StdScalarDeserializer<BigDecimal>(BigDecimal.class) {
             @Override
             public BigDecimal deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
                 return new BigDecimal(p.getValueAsString().replace(".", "").replace(',', '.'));

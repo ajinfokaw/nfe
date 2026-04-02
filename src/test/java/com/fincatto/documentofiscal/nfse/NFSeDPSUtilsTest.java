@@ -8,7 +8,7 @@ import org.junit.Test;
 public class NFSeDPSUtilsTest {
     @Test
     public void testeFormatoDPSId() {
-        final var dps = new NFSeSefinNacionalDPS().setInfDPS(new NFSeSefinNacionalInfDPS());
+        final NFSeSefinNacionalDPS dps = new NFSeSefinNacionalDPS().setInfDPS(new NFSeSefinNacionalInfDPS());
         dps.getInfDPS()
                 .setCodigoMunicipioEmissao("1234567")
                 .setSerie("7")
@@ -18,9 +18,9 @@ public class NFSeDPSUtilsTest {
                 .setIntermediario(new NFSeSefinNacionalInfoPessoa().setCPF("60071397000"));
 
         // Testa os três tipos de emitente com cpf
-        for (final var tipoEmitente : NFSeSefinNacionalInfDPSTipoEmitente.values()) {
+        for (final NFSeSefinNacionalInfDPSTipoEmitente tipoEmitente : NFSeSefinNacionalInfDPSTipoEmitente.values()) {
             dps.getInfDPS().setTipoEmitente(tipoEmitente);
-            final var idGerado = NFSeDPSUtils.gerarId(dps);
+            final String idGerado = NFSeDPSUtils.gerarId(dps);
             dps.getInfDPS().setId(idGerado);
             switch (tipoEmitente) {
                 case PRESTADOR:
@@ -42,9 +42,9 @@ public class NFSeDPSUtilsTest {
         dps.getInfDPS().getTomador().setCNPJ("83041294000127");
         dps.getInfDPS().getIntermediario().setCNPJ("48177960000158");
         // Testa os três tipos de emitente com cnpj
-        for (final var tipoEmitente : NFSeSefinNacionalInfDPSTipoEmitente.values()) {
+        for (final NFSeSefinNacionalInfDPSTipoEmitente tipoEmitente : NFSeSefinNacionalInfDPSTipoEmitente.values()) {
             dps.getInfDPS().setTipoEmitente(tipoEmitente);
-            final var idGerado = NFSeDPSUtils.gerarId(dps);
+            final String idGerado = NFSeDPSUtils.gerarId(dps);
             dps.getInfDPS().setId(idGerado);
             switch (tipoEmitente) {
                 case PRESTADOR:

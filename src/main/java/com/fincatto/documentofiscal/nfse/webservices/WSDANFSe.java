@@ -5,7 +5,6 @@ import com.fincatto.documentofiscal.nfse.NFSeConfig;
 import com.fincatto.documentofiscal.nfse.utils.NFSeHttpClient;
 
 import java.net.URI;
-import java.net.http.HttpResponse;
 
 public class WSDANFSe implements DFLog {
 
@@ -25,8 +24,8 @@ public class WSDANFSe implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public byte[] downloadDANFSePdfByChaveAcesso(final String nfseChaveAcesso) throws Exception {
-        final var url = new URI(String.format("%s/danfse/%s", URL_BASE_PRODUCAO, nfseChaveAcesso));
-        final var response = new NFSeHttpClient(this.config).sendGetRequest(url, HttpResponse.BodyHandlers.ofByteArray());
+        final URI url = new URI(String.format("%s/danfse/%s", URL_BASE_PRODUCAO, nfseChaveAcesso));
+        final NFSeHttpClient.NFSeHttpResponse<byte[]> response = new NFSeHttpClient(this.config).sendGetRequestBytes(url);
         return response.body();
     }
 }

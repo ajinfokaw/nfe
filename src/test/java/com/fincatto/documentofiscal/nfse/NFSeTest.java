@@ -2,6 +2,7 @@ package com.fincatto.documentofiscal.nfse;
 
 import com.fincatto.documentofiscal.DFLog;
 import com.fincatto.documentofiscal.nfse.classes.nfsenacional.*;
+import com.fincatto.documentofiscal.nfse.classes.parametrosmunicipais.consulta.*;
 import com.fincatto.documentofiscal.nfse.webservices.WSDANFSe;
 import com.fincatto.documentofiscal.nfse.webservices.WSParametrosMunicipais;
 import com.fincatto.documentofiscal.nfse.webservices.WSSefinNFSe;
@@ -31,6 +32,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
@@ -65,8 +67,8 @@ public class NFSeTest implements DFLog {
     @Test
     public void consultaConvenioMunicipioTest() throws Exception {
         getLogger().info("Teste de consulta de convênio do município na API de Parâmetros Municipais do Governo Federal");
-        final var codigoDoMunicipio = "4216602"; // SC - São José
-        final var consulta = new WSParametrosMunicipais(config).consultaConvenioMunicipio(codigoDoMunicipio);
+        final String codigoDoMunicipio = "4216602"; // SC - São José
+        final NFSeParametrosMunicipaisConvenioResponse consulta = new WSParametrosMunicipais(config).consultaConvenioMunicipio(codigoDoMunicipio);
         Assert.assertNotNull(consulta);
         Assert.assertEquals("Parâmetros do convênio recuperados com sucesso.", consulta.getMensagem());
         Assert.assertTrue(consulta.getParametrosConvenio().isAderenteAmbienteNacional());
@@ -81,10 +83,10 @@ public class NFSeTest implements DFLog {
     @Test
     public void consultaAliquotaMunicipioServicoCompetenciaTest() throws Exception {
         getLogger().info("Teste de consulta de alíquota do município para um serviço e competência na API de Parâmetros Municipais do Governo Federal");
-        final var codigoDoMunicipio = "4216602"; // SC - São José
-        final var codigoDoServico = "31.01.04.000"; // Serviços técnicos em telecomunicações e congêneres
-        final var dataCompetencia = LocalDate.now();
-        final var consulta = new WSParametrosMunicipais(config).consultaAliquotaMunicipioServicoCompetencia(codigoDoMunicipio, codigoDoServico, dataCompetencia);
+        final String codigoDoMunicipio = "4216602"; // SC - São José
+        final String codigoDoServico = "31.01.04.000"; // Serviços técnicos em telecomunicações e congêneres
+        final LocalDate dataCompetencia = LocalDate.now();
+        final NFSeParametrosMunicipaisAliquotasResponse consulta = new WSParametrosMunicipais(config).consultaAliquotaMunicipioServicoCompetencia(codigoDoMunicipio, codigoDoServico, dataCompetencia);
         Assert.assertNotNull(consulta);
         Assert.assertEquals("Alíquotas recuperadas com sucesso.", consulta.getMensagem());
         Assert.assertNotNull(consulta.getAliquotas());
@@ -100,9 +102,9 @@ public class NFSeTest implements DFLog {
     @Ignore
     @Test
     public void consultaHistoricoAliquotaMunicipioServicoTest() throws Exception {
-        final var codigoDoMunicipio = "4216602";
-        final var codigoDoServico = "01.01.01.000";
-        final var consulta = new WSParametrosMunicipais(config).consultaHistoricoAliquotaMunicipioServico(codigoDoMunicipio, codigoDoServico);
+        final String codigoDoMunicipio = "4216602";
+        final String codigoDoServico = "01.01.01.000";
+        final NFSeParametrosMunicipaisAliquotasResponse consulta = new WSParametrosMunicipais(config).consultaHistoricoAliquotaMunicipioServico(codigoDoMunicipio, codigoDoServico);
         System.out.println(consulta);
     }
 
@@ -120,17 +122,17 @@ public class NFSeTest implements DFLog {
     @Ignore
     @Test
     public void consultaRegimesEspeciaisMunicipioServicoCompetenciaTest() throws Exception {
-        final var codigoDoMunicipio = "4216602";
-        final var codigoDoServico = "17.01.01.000";
-        final var consulta = new WSParametrosMunicipais(config).consultaRegimesEspeciaisMunicipioServicoCompetencia(codigoDoMunicipio, codigoDoServico, LocalDate.now());
+        final String codigoDoMunicipio = "4216602";
+        final String codigoDoServico = "17.01.01.000";
+        final NFSeParametrosMunicipaisRegimesEspeciaisResponse consulta = new WSParametrosMunicipais(config).consultaRegimesEspeciaisMunicipioServicoCompetencia(codigoDoMunicipio, codigoDoServico, LocalDate.now());
         System.out.println(consulta);
     }
 
     @Ignore
     @Test
     public void consultaRetencoesMunicipioCompetenciaTest() throws Exception {
-        final var codigoDoMunicipio = "4216602";
-        final var consulta = new WSParametrosMunicipais(config).consultaRetencoesMunicipioCompetencia(codigoDoMunicipio, LocalDate.now().minusMonths(12));
+        final String codigoDoMunicipio = "4216602";
+        final NFSeParametrosMunicipaisRetencoesResponse consulta = new WSParametrosMunicipais(config).consultaRetencoesMunicipioCompetencia(codigoDoMunicipio, LocalDate.now().minusMonths(12));
         System.out.println(consulta);
     }
 
@@ -138,9 +140,9 @@ public class NFSeTest implements DFLog {
     @Test
     public void downloadDANFSePdfChaveAcessoTest() throws Exception {
         System.out.println("Teste de download do DANFSe em PDF utilizando a chave de acesso da NFSe");
-        final var nfseChaveAcesso = "";
-        final var pathToSave = "";
-        final var danfsePDF = new WSDANFSe(config).downloadDANFSePdfByChaveAcesso(nfseChaveAcesso);
+        final String nfseChaveAcesso = "";
+        final String pathToSave = "";
+        final byte[] danfsePDF = new WSDANFSe(config).downloadDANFSePdfByChaveAcesso(nfseChaveAcesso);
         FileUtils.writeByteArrayToFile(new File(String.format("%s/%s.pdf", pathToSave, nfseChaveAcesso)), danfsePDF);
     }
 
@@ -148,9 +150,9 @@ public class NFSeTest implements DFLog {
     @Test
     public void downloadXmlNFSeViaChaveAcessoTest() throws Exception {
         System.out.println("Teste de download do xml da NFSe");
-        final var nfseChaveAcesso = "";
-        final var pathToSave = "";
-        final var responseXml = new WSSefinNFSe(config).getNFSeByChaveAcesso(nfseChaveAcesso);
+        final String nfseChaveAcesso = "";
+        final String pathToSave = "";
+        final NFSeSefinNacionalGetResponse responseXml = new WSSefinNFSe(config).getNFSeByChaveAcesso(nfseChaveAcesso);
 
         final byte[] conteudo = Base64.getDecoder().decode(responseXml.getNfseXmlGZipB64());//java 8
         try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(conteudo))) {
@@ -160,7 +162,7 @@ public class NFSeTest implements DFLog {
                 while ((line = bf.readLine()) != null) {
                     outStr.append(line);
                 }
-                final var xml = config.getPersister().read(NFSeSefinNacionalNFSe.class, outStr.toString());
+                final NFSeSefinNacionalNFSe xml = config.getPersister().read(NFSeSefinNacionalNFSe.class, outStr.toString());
                 FileUtils.writeStringToFile(new File(String.format("%s/%s.xml", pathToSave, nfseChaveAcesso)), xml.toXml());
             }
         }
@@ -173,7 +175,7 @@ public class NFSeTest implements DFLog {
     }
 
     public String assinarXml(String xmlString) throws Exception {
-        final var keyStore = this.config.getCertificadoKeyStore();
+        final KeyStore keyStore = this.config.getCertificadoKeyStore();
 
         // Obter alias do certificado
         String alias = keyStore.aliases().nextElement();
@@ -227,7 +229,7 @@ public class NFSeTest implements DFLog {
     @Ignore
     @Test
     public void testeEmitirNFSe() throws Exception {
-        final var dps = new NFSeSefinNacionalDPS().setInfDPS(new NFSeSefinNacionalInfDPS()
+        final NFSeSefinNacionalDPS dps = new NFSeSefinNacionalDPS().setInfDPS(new NFSeSefinNacionalInfDPS()
                 .setTipoAmbiente(NFSeSefinNacionalTipoAmbiente.HOMOLOGACAO)
                 .setDataHoraEmissao(ZonedDateTime.of(2025, 10, 23, 10, 33, 19, 0, ZoneId.of("-03:00")))
                 .setVersaoApp("NFSe Fake Teste 1.0")
@@ -247,7 +249,7 @@ public class NFSeTest implements DFLog {
     @Ignore
     @Test
     public void testeCancelamentoNFSeByChaveAcesso() throws Exception {
-        final var evento = new NFSeSefinNacionalPedRegEvt().setInfPedReg(
+        final NFSeSefinNacionalPedRegEvt evento = new NFSeSefinNacionalPedRegEvt().setInfPedReg(
                 new NFSeSefinNacionalInfPedReg()
                         .setTpAmb(NFSeSefinNacionalTipoAmbiente.HOMOLOGACAO)
                         .setVerAplic("")

@@ -37,8 +37,8 @@ public class WSSefinNFSe implements DFLog {
      * @throws Exception
      */
     public NFSeSefinNacionalGetResponse getNFSeByChaveAcesso(final String nfseChaveAcesso) throws Exception {
-        final var urlHomologacao = new URI(String.format("%s/%s", URL_HOMOLOGACAO_NFSE, nfseChaveAcesso));
-        final var response = new NFSeHttpClient(config).sendGetRequest(urlHomologacao);
+        final URI urlHomologacao = new URI(String.format("%s/%s", URL_HOMOLOGACAO_NFSE, nfseChaveAcesso));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(urlHomologacao);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalGetResponse.class);
     }
 
@@ -57,9 +57,9 @@ public class WSSefinNFSe implements DFLog {
             gzipped = baos.toByteArray();
         };
 
-        final var response = new NFSeHttpClient(config).sendPostRequest(new URI(String.format("%s", URL_HOMOLOGACAO_NFSE)), String.format("{dpsXmlGZipB64:\"%s\"}", Base64.getEncoder().encodeToString(gzipped)));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendPostRequest(new URI(String.format("%s", URL_HOMOLOGACAO_NFSE)), String.format("{dpsXmlGZipB64:\"%s\"}", Base64.getEncoder().encodeToString(gzipped)));
         if (response.statusCode() != 201) {
-            final var responseError = this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalPostResponseErro.class);
+            final NFSeSefinNacionalPostResponseErro responseError = this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalPostResponseErro.class);
             throw new IllegalStateException(String.format("Erro ao enviar DPS. Erros: %s", responseError.getErros()));
         }
 
@@ -81,11 +81,11 @@ public class WSSefinNFSe implements DFLog {
             gzipped = baos.toByteArray();
         }
 
-        final var urlHomologacao = new URI(String.format("%s/%s/eventos", URL_HOMOLOGACAO_NFSE, pedidoRegistroEvento.getInfPedReg().getChaveAcessoNFSE()));
-        final var response = new NFSeHttpClient(config).sendPostRequest(urlHomologacao, String.format("{pedidoRegistroEventoXmlGZipB64:\"%s\"}", Base64.getEncoder().encodeToString(gzipped)));
+        final URI urlHomologacao = new URI(String.format("%s/%s/eventos", URL_HOMOLOGACAO_NFSE, pedidoRegistroEvento.getInfPedReg().getChaveAcessoNFSE()));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendPostRequest(urlHomologacao, String.format("{pedidoRegistroEventoXmlGZipB64:\"%s\"}", Base64.getEncoder().encodeToString(gzipped)));
 
         if (response.statusCode() != 201) {
-            final var responseError = this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalPostResponseErro.class);
+            final NFSeSefinNacionalPostResponseErro responseError = this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalPostResponseErro.class);
             throw new IllegalStateException(String.format("Erro ao enviar pedido de registro de evento. Erros: %s", responseError.getErros()));
         }
 

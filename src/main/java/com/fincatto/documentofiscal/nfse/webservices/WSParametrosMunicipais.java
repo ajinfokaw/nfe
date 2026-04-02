@@ -1,5 +1,6 @@
 package com.fincatto.documentofiscal.nfse.webservices;
 
+import com.fincatto.documentofiscal.DFAmbiente;
 import com.fincatto.documentofiscal.DFLog;
 import com.fincatto.documentofiscal.nfse.NFSeConfig;
 import com.fincatto.documentofiscal.nfse.classes.parametrosmunicipais.consulta.*;
@@ -30,8 +31,8 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisConvenioResponse consultaConvenioMunicipio(final String codigoMunicipio) throws Exception {
-        final var url = new URI(String.format("%s/%s/convenio", URL_BASE_PRODUCAO, codigoMunicipio));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final URI url = new URI(String.format("%s/%s/convenio", getBaseUrl(), codigoMunicipio));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         this.getLogger().info(response.body());
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisConvenioResponse.class);
     }
@@ -46,9 +47,9 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisAliquotasResponse consultaAliquotaMunicipioServicoCompetencia(final String codigoMunicipio, final String codigoServico, final LocalDate competencia) throws Exception {
-        final var competenciaFormatada = formataCompetencia(competencia);
-        final var url = new URI(String.format("%s/%s/%s/%s/aliquota", URL_BASE_PRODUCAO, codigoMunicipio, codigoServico, competenciaFormatada));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final String competenciaFormatada = formataCompetencia(competencia);
+        final URI url = new URI(String.format("%s/%s/%s/%s/aliquota", getBaseUrl(), codigoMunicipio, codigoServico, competenciaFormatada));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         this.getLogger().info(response.body());
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisAliquotasResponse.class);
     }
@@ -62,8 +63,8 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisAliquotasResponse consultaHistoricoAliquotaMunicipioServico(final String codigoMunicipio, final String codigoServico) throws Exception {
-        final var url = new URI(String.format("%s/%s/%s/historicoaliquotas", URL_BASE_PRODUCAO, codigoMunicipio, codigoServico));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final URI url = new URI(String.format("%s/%s/%s/historicoaliquotas", getBaseUrl(), codigoMunicipio, codigoServico));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisAliquotasResponse.class);
     }
 
@@ -77,9 +78,9 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisBeneficioResponse consultaBeneficioMunicipioBeneficioCompetencia(final String codigoMunicipio, final String numeroBeneficio, final LocalDate competencia) throws Exception {
-        final var competenciaFormatada = formataCompetencia(competencia);
-        final var url = new URI(String.format("%s/%s/%s/%s/beneficio", URL_BASE_PRODUCAO, codigoMunicipio, numeroBeneficio, competenciaFormatada));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final String competenciaFormatada = formataCompetencia(competencia);
+        final URI url = new URI(String.format("%s/%s/%s/%s/beneficio", getBaseUrl(), codigoMunicipio, numeroBeneficio, competenciaFormatada));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisBeneficioResponse.class);
     }
 
@@ -93,9 +94,9 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisRegimesEspeciaisResponse consultaRegimesEspeciaisMunicipioServicoCompetencia(final String codigoMunicipio, final String codigoServico, final LocalDate competencia) throws Exception {
-        final var competenciaFormatada = formataCompetencia(competencia);
-        final var url = new URI(String.format("%s/%s/%s/%s/regimes_especiais", URL_BASE_PRODUCAO, codigoMunicipio, codigoServico, competenciaFormatada));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final String competenciaFormatada = formataCompetencia(competencia);
+        final URI url = new URI(String.format("%s/%s/%s/%s/regimes_especiais", getBaseUrl(), codigoMunicipio, codigoServico, competenciaFormatada));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisRegimesEspeciaisResponse.class);
     }
 
@@ -108,10 +109,16 @@ public class WSParametrosMunicipais implements DFLog {
      * @throws Exception Se ocorrer um erro durante a requisição ou no processamento da resposta.
      */
     public NFSeParametrosMunicipaisRetencoesResponse consultaRetencoesMunicipioCompetencia(final String codigoMunicipio, final LocalDate competencia) throws Exception {
-        final var competenciaFormatada = formataCompetencia(competencia);
-        final var url = new URI(String.format("%s/%s/%s/retencoes", URL_BASE_PRODUCAO, codigoMunicipio, competenciaFormatada));
-        final var response = new NFSeHttpClient(config).sendGetRequest(url);
+        final String competenciaFormatada = formataCompetencia(competencia);
+        final URI url = new URI(String.format("%s/%s/%s/retencoes", getBaseUrl(), codigoMunicipio, competenciaFormatada));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeParametrosMunicipaisRetencoesResponse.class);
+    }
+
+    private String getBaseUrl() {
+        return this.config.getAmbiente() == DFAmbiente.PRODUCAO
+                ? URL_BASE_PRODUCAO
+                : URL_BASE_HOMOLOGACAO;
     }
 
 

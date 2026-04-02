@@ -71,7 +71,7 @@ public abstract class DFCadeiaCertificados implements DFLog {
         DFLog.getLogger(DFCadeiaCertificados.class).debug("Obtendo cadeia de certificados para a URL: {}", url);
         if (StringUtils.isNotBlank(url)) {
             // obtém o host a partir da URL fornecida - necessário para abrir a conexão SSL
-            final var host = new URI(url).getHost();
+            final String host = new URI(url).getHost();
 
             final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             //trustManagerFactory.init(keyStore);

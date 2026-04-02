@@ -11,7 +11,7 @@ public class NFSeEventoUtilsTest {
     @Ignore
     @Test
     public void testeFormatoPedidoRegistroEventoId(){
-        final var evento = new NFSeSefinNacionalPedRegEvt();
+        final NFSeSefinNacionalPedRegEvt evento = new NFSeSefinNacionalPedRegEvt();
         Assert.assertThrows(AssertionError.class, () -> NFSeEventoUtils.gerarId(evento));
 
         evento.setInfPedReg(new NFSeSefinNacionalInfPedReg().setChaveAcessoNFSE("12345123451234512134512345123451234512345123451234"));
