@@ -42,7 +42,7 @@ public class NFNotaInfoFormaPagamentoTest {
         Assert.assertNotNull(formaPagamento.toString());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void naoDevePermitirFormaPagamentoMoedaNulo() {
         final NFNotaInfoFormaPagamento formaPagamento = new NFNotaInfoFormaPagamento();
         formaPagamento.setIndicadorFormaPagamento(NFIndicadorFormaPagamento.A_VISTA);

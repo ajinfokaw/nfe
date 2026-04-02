@@ -6,12 +6,28 @@ Comunicador de nota fiscal e nota fiscal do consumidor da [fazenda](http://www.n
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.wmixvideo/nfe)](https://search.maven.org/artifact/com.github.wmixvideo/nfe)
 [![Apache 2.0 License](https://img.shields.io/badge/license-apache%202.0-green.svg) ](https://github.com/wmixvideo/nfe/blob/master/LICENSE)
 
+---
 ## Atenção
 Este é um projeto colaborativo, sinta-se à vontade em usar e colaborar com o mesmo.<br/>
 
 Antes de submeter um pull request, verifique a estrutura seguida pelo projeto e procure incluir no mesmo testes unitários que garantam que a funcionalidade funciona como o esperado.
 
 Possuímos um grupo de WhatsApp para discussões sobre o desenvolvimento da lib: https://chat.whatsapp.com/LFmqpkoiIYc6Zy3d4TnZGU
+
+---
+# Índice
+
+- [Antes de usar](#antes-de-usar)
+- [Instalação](#instalação)
+- [Como usar](#como-usar)
+- [Exemplos de uso](#alguns-exemplos)
+- [Conversões e manipulação de XML](#conversões-e-manipulação-de-xml)
+- [Serviços disponíveis](#serviços-disponíveis)
+- [Requisitos](#requisitos)
+- [Criação do Java KeyStore (JKS)](#criação-do-java-keystore-jks)
+- [Configuração para Testes da API NFSe](#configuração-para-testes-da-api-nfse)
+
+---
 
 ## Antes de usar
 Antes de começar a implementar, é altamente recomendável a leitura da documentação oficial que o governo disponibiliza em http://www.nfe.fazenda.gov.br/portal
@@ -166,6 +182,8 @@ distDFeInt.setDistribuicao(new CTDistribuicaoNSU().setUltimoNSU("000000000036552
 final String retornoConsulta = WSDistribuicaoCTe.consultar(distDFeInt, new NFeConfig());
 ```
 
+## Conversões e manipulação de XML
+
 ### Convertendo objetos Java em XML
 Qualquer objeto que seja uma representação XML do documento NFe, pode ser obtido seu XML de forma fácil bastando chamar o método **toString**, por exemplo, para conseguir o XML do lote, invoque o toString
 
@@ -236,7 +254,7 @@ String xmlNotaProcessadaPeloSefaz = notaProcessada.toString();
 
 ## Requisitos
 
-JDK >= 1.8<br>
+JDK >= 11<br>
 Maven >= 3.x
 
 ## Criação do Java KeyStore (JKS)
@@ -256,4 +274,48 @@ public static void main(String args[]){
         e.printStackTrace();
     }
 }
+```
+
+## Configuração para Testes da API NFSe
+
+Utilizando os métodos do teste unitário **NFSeTest** é possível testar os endpoints da API NFSe.
+Esses endpoints porém exigem comunicação segura. Para isso, é necessário certificados válidos. 
+
+Exemplo de configuração utilizando variáveis de ambiente para carregar os certificados em teste:
+```java
+this.config = new NFSEConfigFake( System.getenv("CERTIFICADO_PATH"), System.getenv("CERTIFICADO_SENHA"), System.getenv("CADEIA_CERTIFICADOS_PATH"), System.getenv("CADEIA_CERTIFICADOS_SENHA"));
+```
+
+### Variáveis de ambiente necessárias
+- `CERTIFICADO_PATH`: caminho para o arquivo do certificado do cliente (exemplo: certificado.pfx).
+- `CERTIFICADO_SENHA`: senha do certificado do cliente.
+- `CADEIA_CERTIFICADOS_PATH`: caminho para a cadeia de certificados da SEFAZ (exemplo: cadeia.jks).
+- `CADEIA_CERTIFICADOS_SENHA`: senha da cadeia de certificados.
+
+### Instruções para configuração
+Defina essas variáveis de ambiente no seu sistema antes de executar os testes unitários para que a configuração seja carregada automaticamente e a comunicação com o ambiente da SEFAZ seja autenticada.
+
+Exemplo para Linux/macOS:
+```
+export CERTIFICADO_PATH=/caminho/para/certificado.pfx
+export CERTIFICADO_SENHA=suaSenhaCertificado
+export CADEIA_CERTIFICADOS_PATH=/caminho/para/cadeia.jks
+export CADEIA_CERTIFICADOS_SENHA=suaSenhaCadeia
+mvn test -Dtest=NFSeTest#nomeDoTeste
+```
+
+Exemplo para Windows PowerShell:
+```
+$env:CERTIFICADO_PATH="C:\caminho\para\certificado.pfx"
+$env:CERTIFICADO_SENHA="suaSenhaCertificado"
+$env:CADEIA_CERTIFICADOS_PATH="C:\caminho\para\cadeia.jks"
+$env:CADEIA_CERTIFICADOS_SENHA="suaSenhaCadeia"
+mvn test -Dtest=NFSeTest#nomeDoTeste
+```
+
+Com essa configuração, os testes unitários irão consumir os endpoints da NFSe de forma autenticada, facilitando o desenvolvimento e a validação da integração.
+
+Exemplo de resultado com **consultaConvenioMunicipioTest**:
+```shell
+NFSeParametrosMunicipaisConvenioResponse{dataHoraProcessamento='null', tipoAmbiente=null, parametrosConvenio=NFSeParametrosMunicipaisParametrosConvenio{aderenteAmbienteNacional=1, aderenteEmissorNacional=0, situacaoEmissaoPadraoContribuintesRFB=1, aderenteMAN=0, permiteAproveitametoDeCreditos=true}, mensagem='Parâmetros do convênio recuperados com sucesso.'}
 ```

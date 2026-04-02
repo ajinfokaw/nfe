@@ -3,8 +3,11 @@ package com.fincatto.documentofiscal.transformers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.YearMonth;
 import java.time.ZonedDateTime;
 
+import com.fincatto.documentofiscal.nfe400.classes.evento.NFEventoTipoAutor;
+import com.fincatto.documentofiscal.nfe400.transformers.NFEventoTipoAutorTransformer;
 import org.simpleframework.xml.transform.RegistryMatcher;
 
 import com.fincatto.documentofiscal.DFAmbiente;
@@ -114,61 +117,10 @@ import com.fincatto.documentofiscal.nfe310.classes.cadastro.NFIndicadorContribui
 import com.fincatto.documentofiscal.nfe310.classes.cadastro.NFIndicadorContribuinteNFe;
 import com.fincatto.documentofiscal.nfe310.classes.cadastro.NFSituacaoContribuinte;
 import com.fincatto.documentofiscal.nfe310.classes.lote.envio.NFLoteIndicadorProcessamento;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFFormaImportacaoIntermediacao;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFFormaPagamentoMoeda;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFIdentificadorLocalDestinoOperacao;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFIndicadorIEDestinatario;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFIndicadorPresencaComprador;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFNotaInfoItemIndicadorExigibilidadeISS;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFNotaInfoItemIndicadorIncentivoFiscal;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFNotaInfoRegimeEspecialTributacao;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFOperacaoConsumidorFinal;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFOperadoraCartao;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFTipoIntegracaoPagamento;
-import com.fincatto.documentofiscal.nfe310.classes.nota.NFViaTransporteInternacional;
-import com.fincatto.documentofiscal.nfe310.transformers.NFFinalidadeTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFFormaImportacaoIntermediacaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFFormaPagamentoMoedaTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFFormaPagamentoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFIdentificadorLocalDestinoOperacaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFIndicadorContribuinteCTTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFIndicadorContribuinteNFeTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFIndicadorIEDestinatarioTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFIndicadorPresencaCompradorTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFLoteIndicadorProcessamentoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFModalidadeFreteTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoCombustivelTipoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoEspecieVeiculoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoImpostoTributacaoICMSTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemIndicadorExigibilidadeISSTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemIndicadorIncentivoFiscalTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemModalidadeBCICMSTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemProdutoArmamentoTipoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemProdutoVeiculoCondicaoChassiTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemProdutoVeiculoCondicaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemProdutoVeiculoRestricaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoItemProdutoVeiculoTipoOperacaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoRegimeEspecialTributacaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoSituacaoTributariaCOFINSTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoSituacaoTributariaIPITransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoSituacaoTributariaPISTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoTipoVeiculoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaInfoVeiculoCorTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaMotivoDesoneracaoICMSTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFNotaSituacaoOperacionalSimplesNacionalTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFOperacaoConsumidorFinalTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFOperadoraCartaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFOrigemProcessoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFOrigemTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFProdutoCompoeValorNotaTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFProgramaEmissorTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFRegimeTributarioTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFSituacaoContribuinteTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFTipoImpressaoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFTipoIntegracaoPagamentoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFTipoTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFViaTransporteInternacionalTransformer;
-import com.fincatto.documentofiscal.nfe310.transformers.NFnotaInfoItemModalidadeBCICMSSTTransformer;
+import com.fincatto.documentofiscal.nfe310.classes.nota.*;
+import com.fincatto.documentofiscal.nfe310.transformers.*;
+import com.fincatto.documentofiscal.nfse.classes.nfsenacional.*;
+import com.fincatto.documentofiscal.nfse.transformers.*;
 
 public class DFRegistryMatcher extends RegistryMatcher {
 
@@ -179,6 +131,7 @@ public class DFRegistryMatcher extends RegistryMatcher {
         super.bind(LocalTime.class, new DFLocalTimeTransformer());
         super.bind(ZonedDateTime.class, new DFDateTimeTransformer());
         super.bind(LocalDateTime.class, new DFLocalDateTimeTransformer());
+        super.bind(YearMonth.class, new DFYearMonthTransformer());
         super.bind(ZonedDateTime.class, new DFZonedDateTimeTransformer());
         super.bind(DFUnidadeFederativa.class, new DFUnidadeFederativaTransformer());
         super.bind(NFTipoEmissao.class, new NFTipoEmissaoTransformer());
@@ -287,7 +240,10 @@ public class DFRegistryMatcher extends RegistryMatcher {
         // Reforma tributaria
         super.bind(com.fincatto.documentofiscal.nfe400.classes.NFNotaInfoImpostoTributacaoIS.class, new com.fincatto.documentofiscal.nfe400.transformers.NFNotaInfoImpostoTributacaoISTransformer());
         super.bind(com.fincatto.documentofiscal.nfe400.classes.NFNotaInfoImpostoTributacaoIBSCBS.class, new com.fincatto.documentofiscal.nfe400.transformers.NFNotaInfoImpostoTributacaoIBSCBSTransformer());
-        
+        super.bind(com.fincatto.documentofiscal.nfe400.classes.NFDebito.class, new com.fincatto.documentofiscal.nfe400.transformers.NFDebitoTransformer());
+        super.bind(com.fincatto.documentofiscal.nfe400.classes.NFCredito.class, new com.fincatto.documentofiscal.nfe400.transformers.NFCreditoTransformer());
+
+
         // CTe
         super.bind(CTModal.class, new CTModalTransformer());
         super.bind(CTTipoCte.class, new CTTipoCteTransformer());
@@ -395,5 +351,39 @@ public class DFRegistryMatcher extends RegistryMatcher {
         super.bind(MDFTipoIndAltoDesempenho.class, new MDFTipoIndAltoDesempenhoTransformer());
         super.bind(MDFTipoPermissaoAntecipacao.class, new MDFTipoPermissaoAntecipacaoTransformer());
         super.bind(MDFTipoValePedagio.class, new MDFTipoValePedagioTransformer());
+
+        // Eventos
+        super.bind(NFEventoTipoAutor.class, new NFEventoTipoAutorTransformer());
+
+        // NFSe
+        super.bind(NFSeSefinNacionalTipoAmbiente.class, new NFSeSefinNacionalTipoAmbienteTransformer());
+        super.bind(NFSeSefinNacionalInfDPSTipoEmitente.class, new NFSeSefinNacionalInfDPSTipoEmitenteTransformer());
+        super.bind(NFSeSefinNacionalTSCodJustSubst.class, new NFSeSefinNacionalTSCodJustSubstTransformer());
+        super.bind(NFSeSefinNacionalInfoPrestadorCodigoNaoNIF.class, new NFSeSefinNacionalInfoPrestadorCodigoNaoNIFTransformer());
+        super.bind(NFSeSefinNacionalRegimeTributarioSituacaoSimplesNacional.class, new NFSeSefinNacionalRegimeTributarioSituacaoSimplesNacionalTransformer());
+        super.bind(NFSeSefinNacionalRegimeTributarioApuracaoAposLimiteSimples.class, new NFSeSefinNacionalRegimeTributarioApuracaoAposLimiteSimplesTransformer());
+        super.bind(NFSeSefinNacionalRegimeTributarioRegimeEspecialTributacao.class, new NFSeSefinNacionalRegimeTributarioRegimeEspecialTributacaoTransformer());
+        super.bind(NFSeSefinNacionalLocPrestOpcaoConsumoServico.class, new NFSeSefinNacionalLocPrestOpcaoConsumoServicoTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorModoPrestacao.class, new NFSeSefinNacionalComercioExteriorModoPrestacaoTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorVinculoEntrePartes.class, new NFSeSefinNacionalComercioExteriorVinculoEntrePartesTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorMecanismoApoioPrestador.class, new NFSeSefinNacionalComercioExteriorMecanismoApoioPrestadorTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorMecanismoApoioTomador.class, new NFSeSefinNacionalComercioExteriorMecanismoApoioTomadorTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorMovimentacaoTemporariaBens.class, new NFSeSefinNacionalComercioExteriorMovimentacaoTemporariaBensTransformer());
+        super.bind(NFSeSefinNacionalComercioExteriorCompartilharComMDIC.class, new NFSeSefinNacionalComercioExteriorCompartilharComMDICTransformer());
+        super.bind(NFSeSefinNacionalLocacaoSublocacaoCategoriaServico.class, new NFSeSefinNacionalLocacaoSublocacaoCategoriaServicoTransformer());
+        super.bind(NFSeSefinNacionalLocacaoSublocacaoObjeto.class, new NFSeSefinNacionalLocacaoSublocacaoObjetoTransformer());
+        super.bind(NFSeSefinNacionalExploracaoRodoviariaCategoriaVeiculo.class, new NFSeSefinNacionalExploracaoRodoviariaCategoriaVeiculoTransformer());
+        super.bind(NFSeSefinNacionalExploracaoRodoviariaTipoRodagem.class, new NFSeSefinNacionalExploracaoRodoviariaTipoRodagemTransformer());
+        super.bind(NFSeSefinNacionalDocDedRedTipoDeducaoReducao.class, new NFSeSefinNacionalDocDedRedTipoDeducaoReducaoTransformer());
+        super.bind(NFSeSefinNacionalTribMunicipalTributacaoISSQN.class, new NFSeSefinNacionalTribMunicipalTributacaoISSQNTransformer());
+        super.bind(NFSeSefinNacionalBeneficioMunicipalTipoBeneficio.class, new NFSeSefinNacionalBeneficioMunicipalTipoBeneficioTransformer());
+        super.bind(NFSeSefinNacionalExigSuspensaTipoSuspensao.class, new NFSeSefinNacionalExigSuspensaTipoSuspensaoTransformer());
+        super.bind(NFSeSefinNacionalTribMunicipalTipoImunidade.class, new NFSeSefinNacionalTribMunicipalTipoImunidadeTransformer());
+        super.bind(NFSeSefinNacionalTribMunicipalTipoRetencaoISSQN.class, new NFSeSefinNacionalTribMunicipalTipoRetencaoISSQNTransformer());
+        super.bind(NFSeSefinNacionalTribOutrosPisCofinsSituacaoTributaria.class, new NFSeSefinNacionalTribOutrosPisCofinsSituacaoTributariaTransformer());
+        super.bind(NFSeSefinNacionalTribOutrosPisCofinsTipoRetencao.class, new NFSeSefinNacionalTribOutrosPisCofinsTipoRetencaoTransformer());
+        super.bind(NFSeSefinNacionalInfEventoAmbienteGeracao.class, new NFSeSefinNacionalInfEventoAmbienteGeracaoTransformer());
+        super.bind(NFSeSefinNacionalTSCodJustCanc.class, new NFSeSefinNacionalTSCodJustCancTransformer());
+        super.bind(NFSeSefinNacionalTSCodJustAnaliseFiscalCancIndef.class, new NFSeSefinNacionalTSCodJustAnaliseFiscalCancIndefTransformer());
     }
 }

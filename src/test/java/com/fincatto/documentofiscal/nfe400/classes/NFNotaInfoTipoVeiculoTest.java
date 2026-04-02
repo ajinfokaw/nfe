@@ -28,11 +28,6 @@ public class NFNotaInfoTipoVeiculoTest {
         Assert.assertEquals("24", NFNotaInfoTipoVeiculo.CARGA_CAM.getCodigo());
         Assert.assertEquals("25", NFNotaInfoTipoVeiculo.UTILITARIO.getCodigo());
         Assert.assertEquals("26", NFNotaInfoTipoVeiculo.MOTOR_CASA.getCodigo());
-
-
-
-
-
     }
 
     @Test

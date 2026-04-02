@@ -45,7 +45,7 @@ public enum NFNotaInfoTipoVeiculo {
 
         final int codigoAsInt = Integer.parseInt(codigo);
         for (final NFNotaInfoTipoVeiculo tipoVeiculo : NFNotaInfoTipoVeiculo.values()) {
-            if (tipoVeiculo.getCodigo().equals(codigo)) {
+            if (Integer.parseInt(tipoVeiculo.getCodigo()) == codigoAsInt) {
                 return tipoVeiculo;
             }
         }
