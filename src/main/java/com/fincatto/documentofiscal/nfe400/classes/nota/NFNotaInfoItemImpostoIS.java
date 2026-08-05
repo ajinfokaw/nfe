@@ -1,7 +1,6 @@
 package com.fincatto.documentofiscal.nfe400.classes.nota;
 
 import com.fincatto.documentofiscal.DFBase;
-import com.fincatto.documentofiscal.nfe400.classes.NFNotaInfoImpostoTributacaoIS;
 import com.fincatto.documentofiscal.validadores.DFBigDecimalValidador;
 import java.math.BigDecimal;
 import org.simpleframework.xml.Element;
@@ -16,7 +15,7 @@ public class NFNotaInfoItemImpostoIS extends DFBase {
   private static final long serialVersionUID = -366528394939416671L;
 
   @Element(name = "CSTIS", required = true)
-  private NFNotaInfoImpostoTributacaoIS cstIS; // UB02
+  private String cstIS; // UB02 - CST do Imposto Seletivo (ex.: 000, 011...)
 
   @Element(name = "cClassTribIS", required = true)
   private String cClassTribIS; // UB03
@@ -41,11 +40,11 @@ public class NFNotaInfoItemImpostoIS extends DFBase {
   @Element(required = false)
   private String vIS; // UB11
 
-  public NFNotaInfoImpostoTributacaoIS getCstIS() {
+  public String getCstIS() {
     return cstIS;
   }
 
-  public void setCstIS(NFNotaInfoImpostoTributacaoIS cstIS) {
+  public void setCstIS(String cstIS) {
     this.cstIS = cstIS;
   }
 
