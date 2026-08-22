@@ -364,6 +364,9 @@ public class DFRegistryMatcher extends RegistryMatcher {
         super.bind(NFSeSefinNacionalRegimeTributarioApuracaoAposLimiteSimples.class, new NFSeSefinNacionalRegimeTributarioApuracaoAposLimiteSimplesTransformer());
         super.bind(NFSeSefinNacionalRegimeTributarioRegimeEspecialTributacao.class, new NFSeSefinNacionalRegimeTributarioRegimeEspecialTributacaoTransformer());
         super.bind(NFSeSefinNacionalLocPrestOpcaoConsumoServico.class, new NFSeSefinNacionalLocPrestOpcaoConsumoServicoTransformer());
+        super.bind(NFSeSefinNacionalRTCFinalidadeNFSe.class, new NFSeSefinNacionalRTCFinalidadeNFSeTransformer());
+        super.bind(NFSeSefinNacionalRTCIndicadorUsoConsumoPessoal.class, new NFSeSefinNacionalRTCIndicadorUsoConsumoPessoalTransformer());
+        super.bind(NFSeSefinNacionalRTCIndicadorDestinatario.class, new NFSeSefinNacionalRTCIndicadorDestinatarioTransformer());
         super.bind(NFSeSefinNacionalComercioExteriorModoPrestacao.class, new NFSeSefinNacionalComercioExteriorModoPrestacaoTransformer());
         super.bind(NFSeSefinNacionalComercioExteriorVinculoEntrePartes.class, new NFSeSefinNacionalComercioExteriorVinculoEntrePartesTransformer());
         super.bind(NFSeSefinNacionalComercioExteriorMecanismoApoioPrestador.class, new NFSeSefinNacionalComercioExteriorMecanismoApoioPrestadorTransformer());

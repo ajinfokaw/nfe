@@ -20,6 +20,7 @@ public class WSSefinNFSe implements DFLog {
     public static final String URL_BASE_PRODUCAO = "https://sefin.nfse.gov.br/sefinnacional";
     public static final String URL_BASE_HOMOLOGACAO = "https://sefin.producaorestrita.nfse.gov.br/sefinnacional";
     private static final String URL_HOMOLOGACAO_NFSE = URL_BASE_HOMOLOGACAO + "/nfse";
+    private static final String URL_HOMOLOGACAO_DPS = URL_BASE_HOMOLOGACAO + "/dps";
 
     private final NFSeObjectMapper objectMapper = new NFSeObjectMapper();
     private final NFSeConfig config;
@@ -40,6 +41,33 @@ public class WSSefinNFSe implements DFLog {
         final URI urlHomologacao = new URI(String.format("%s/%s", URL_HOMOLOGACAO_NFSE, nfseChaveAcesso));
         final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(urlHomologacao);
         return this.objectMapper.convertValue(this.objectMapper.readTree(response.body()), NFSeSefinNacionalGetResponse.class);
+    }
+
+    /**
+     * Recupera a chave de acesso da NFS-e gerada a partir de um DPS ja processado (GET /dps/{id}).
+     *
+     * Serve para reconciliar emissoes em que a resposta se perdeu: com o Id do DPS
+     * ({@link com.fincatto.documentofiscal.nfse.utils.NFSeDPSUtils#gerarId}) descobre-se a chave e,
+     * com ela, o XML da nota. Por sigilo fiscal a SEFIN so responde se o certificado da conexao for
+     * de um ator da nota (prestador, tomador ou intermediario).
+     *
+     * @param idDps identificador do DPS (DPS + municipio + inscricao federal + serie + numero)
+     * @return chave de acesso da NFS-e, ou null quando nao ha nota gerada para esse DPS
+     */
+    public String getChaveAcessoByIdDps(final String idDps) throws Exception {
+        final URI url = new URI(String.format("%s/%s", URL_HOMOLOGACAO_DPS, idDps));
+        final NFSeHttpClient.NFSeHttpResponse<String> response = new NFSeHttpClient(config).sendGetRequest(url);
+        if (response.statusCode() == 404) {
+            return null;
+        }
+        if (response.statusCode() != 200) {
+            throw new IllegalStateException(String.format("Erro ao consultar a DPS %s. HTTP %s: %s",
+                    idDps, response.statusCode(), response.body()));
+        }
+        final com.fasterxml.jackson.databind.JsonNode raiz = this.objectMapper.readTree(response.body());
+        // A API responde com a chave em "chaveAcesso"; o texto puro tambem e aceito por seguranca.
+        final com.fasterxml.jackson.databind.JsonNode chave = raiz.get("chaveAcesso");
+        return chave != null && !chave.isNull() ? chave.asText() : raiz.asText(null);
     }
 
     /**

@@ -20,7 +20,12 @@ public class NFSeSefinNacionalInfPedReg {
     protected String cpfAutor;
     @Element(name = "chNFSe")
     protected String chaveAcessoNFSE;
-    @Element(name = "nPedRegEvento")
+    /**
+     * Número do pedido de registro do evento. Opcional porque o layout 1.01 (PL_NFSe_1.01,
+     * TCInfPedReg) não tem esse elemento — enviá-lo faz a SEFIN rejeitar por esquema. Fica na
+     * classe para quem ainda serializa o 1.00; nulo, simplesmente não é escrito.
+     */
+    @Element(name = "nPedRegEvento", required = false)
     protected String numeroPedidoRegistroEvento;
     @Attribute(name = "Id")
     protected String id;

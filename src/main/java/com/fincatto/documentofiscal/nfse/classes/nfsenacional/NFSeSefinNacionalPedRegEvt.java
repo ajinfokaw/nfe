@@ -13,7 +13,7 @@ public class NFSeSefinNacionalPedRegEvt {
     protected NFSeSefinNacionalInfPedReg infPedReg;
     @Element(name = "Signature", required = false)
     protected SignatureType signature;
-    @Attribute(name = "versao", empty = "1.00")
+    @Attribute(name = "versao", empty = "1.01")
     protected String versao;
 
 
@@ -32,6 +32,15 @@ public class NFSeSefinNacionalPedRegEvt {
 
     public NFSeSefinNacionalPedRegEvt setSignature(SignatureType signature) {
         this.signature = signature;
+        return this;
+    }
+
+    public String getVersao() {
+        return versao;
+    }
+
+    public NFSeSefinNacionalPedRegEvt setVersao(String versao) {
+        this.versao = versao;
         return this;
     }
 

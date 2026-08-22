@@ -17,10 +17,8 @@ public class NFSeEventoUtilsTest {
         evento.setInfPedReg(new NFSeSefinNacionalInfPedReg().setChaveAcessoNFSE("12345123451234512134512345123451234512345123451234"));
         Assert.assertThrows(AssertionError.class, () -> NFSeEventoUtils.gerarId(evento));
 
-        evento.getInfPedReg().setNPedRegEvento("1");
-        Assert.assertThrows(AssertionError.class, () -> NFSeEventoUtils.gerarId(evento));
-
         evento.getInfPedReg().setEvento(new NFSeSefinNacionalInfPedRegTE101101());
-        Assert.assertEquals("PRE12345123451234512134512345123451234512345123451234101101001", NFSeEventoUtils.gerarId(evento));
+        // Layout 1.01: "PRE" + chave (50) + tipo do evento (6), sem o nPedRegEvento.
+        Assert.assertEquals("PRE12345123451234512134512345123451234512345123451234101101", NFSeEventoUtils.gerarId(evento));
     }
 }

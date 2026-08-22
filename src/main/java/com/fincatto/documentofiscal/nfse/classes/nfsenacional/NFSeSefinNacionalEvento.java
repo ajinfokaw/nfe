@@ -11,7 +11,7 @@ public class NFSeSefinNacionalEvento {
 
     @Element(name = "infEvento")
     protected NFSeSefinNacionalInfEvento infEvento;
-    @Attribute(name = "versao", empty = "1.00")
+    @Attribute(name = "versao", empty = "1.01")
     protected String versao;
     @Element(name = "Signature", required = false)
     protected SignatureType signature;

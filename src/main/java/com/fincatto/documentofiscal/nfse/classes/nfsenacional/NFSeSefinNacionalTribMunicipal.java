@@ -10,20 +10,24 @@ import org.simpleframework.xml.*;
 @Root(name = "TribMunicipal")
 public class NFSeSefinNacionalTribMunicipal {
 
+    // Ordem conforme TCTribMunicipal do layout 1.01 (o simple-xml serializa na ordem dos campos):
+    // tribISSQN, cPaisResult, tpImunidade, exigSusp, BM, tpRetISSQN, pAliq. No 1.00 BM/tpImunidade
+    // vinham antes e pAliq precedia tpRetISSQN — enviar naquela ordem faz a SEFIN rejeitar o DPS
+    // por esquema (E1235).
     @Element(name = "tribISSQN")
     protected NFSeSefinNacionalTribMunicipalTributacaoISSQN tributacaoISSQN;
     @Element(name = "cPaisResult", required = false)
     protected String codigoPais;
-    @Element(name = "BM", required = false)
-    protected NFSeSefinNacionalBeneficioMunicipal beneficioMunicipal;
-    @Element(name = "exigSusp", required = false)
-    protected NFSeSefinNacionalExigSuspensa exigibilidadeSuspensa;
     @Element(name = "tpImunidade", required = false)
     protected NFSeSefinNacionalTribMunicipalTipoImunidade tipoImunidade;
-    @Element(name = "pAliq", required = false)
-    protected String percentualAliquota;
+    @Element(name = "exigSusp", required = false)
+    protected NFSeSefinNacionalExigSuspensa exigibilidadeSuspensa;
+    @Element(name = "BM", required = false)
+    protected NFSeSefinNacionalBeneficioMunicipal beneficioMunicipal;
     @Element(name = "tpRetISSQN")
     protected NFSeSefinNacionalTribMunicipalTipoRetencaoISSQN tipoRetencaoISSQN;
+    @Element(name = "pAliq", required = false)
+    protected String percentualAliquota;
 
     /**
      * @return tributação do ISSQN sobre o serviço prestado

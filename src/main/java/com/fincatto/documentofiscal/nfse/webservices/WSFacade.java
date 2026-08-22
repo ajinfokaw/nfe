@@ -116,6 +116,13 @@ public class WSFacade {
         return wsDANFSe.downloadDANFSePdfByChaveAcesso(nfseChaveAcesso);
     }
 
+    /**
+     * Chave de acesso da NFS-e gerada a partir do Id do DPS informado (null quando nao existe).
+     */
+    public String getChaveAcessoByIdDps(final String idDps) throws Exception {
+        return this.wsSefinNFSe.getChaveAcessoByIdDps(idDps);
+    }
+
     public NFSeSefinNacionalGetResponse getNFSeByChaveAcesso(final String nfseChaveAcesso) throws Exception {
         return wsSefinNFSe.getNFSeByChaveAcesso(nfseChaveAcesso);
     }

@@ -10,7 +10,7 @@ public class NFSeSefinNacionalNFSe {
 
     @Element(name = "infNFSe")
     protected NFSeSefinNacionalInfNFSe infNFSe;
-    @Attribute(name = "versao", empty = "1.00")
+    @Attribute(name = "versao", empty = "1.01")
     protected String versao;
     @Element(name = "Signature")
     protected SignatureType signature;

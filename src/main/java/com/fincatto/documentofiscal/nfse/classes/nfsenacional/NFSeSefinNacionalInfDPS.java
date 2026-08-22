@@ -39,6 +39,8 @@ public class NFSeSefinNacionalInfDPS {
     protected NFSeSefinNacionalServ servicoPrestado;
     @Element(name = "valores")
     protected NFSeSefinNacionalInfoValores valores;
+    @Element(name = "IBSCBS", required = false)
+    protected NFSeSefinNacionalRTCInfoIBSCBS ibscbs;
     @Attribute(name = "Id", empty = "") //todo: implementar a validação da regra (método + teste unitário)
     protected String id;
 
@@ -80,6 +82,21 @@ public class NFSeSefinNacionalInfDPS {
     /**
      * @return Versão do aplicativo que gerou o DPS.
      */
+    /**
+     * @return Grupo IBS/CBS (RTC), opcional no layout 1.01.
+     */
+    public NFSeSefinNacionalRTCInfoIBSCBS getIBSCBS() {
+        return ibscbs;
+    }
+
+    /**
+     * @param ibscbs Grupo IBS/CBS (RTC), opcional no layout 1.01.
+     */
+    public NFSeSefinNacionalInfDPS setIBSCBS(NFSeSefinNacionalRTCInfoIBSCBS ibscbs) {
+        this.ibscbs = ibscbs;
+        return this;
+    }
+
     public String getVersaoApp() {
         return versaoApp;
     }
